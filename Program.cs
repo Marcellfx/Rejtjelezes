@@ -12,10 +12,15 @@
 
             for (int i = 0; i < word.Count(); i++)
             {
-                var charcode = letters.IndexOf(key[i]) + letters.IndexOf(word[i]);
-                if (charcode > 26)
-                    result += letters[charcode % 27];
-                else result += letters[charcode];
+                if (letters.Contains(word[i]) && letters.Contains(key[i]))
+                {
+                    var charcode = letters.IndexOf(key[i]) + letters.IndexOf(word[i]);
+                    if (charcode > 26)
+                        result += letters[charcode % 27];
+                    else result += letters[charcode];
+                }
+                else
+                    return result = "nem angol abc beűét tartalmaz";
             }
 
             return result;
