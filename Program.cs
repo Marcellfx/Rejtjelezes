@@ -30,32 +30,45 @@
         {
             var letters = "abcdefghijklmnopqrstuvwxyz ";
             List<string> words = new List<string>(File.ReadAllLines("words.txt"));
+            string key = "";
             string result1 = "";
             string result2 = "";
 
-            foreach (string word in words) 
-            {
-                for (int i = 0; i < word.Count(); i++)
+             foreach (string word in words)
+             {
+                if (word.Length > message1.Length)
                 {
-                    var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(word[i]);
-                    if (charcode < 0)
-                        result1 += letters[charcode + 27];
-                    else result1 += letters[charcode];
+                    result1 = "";
+                    result2 = "";
+                    key = "";
+                    continue;
                 }
 
-                for (int i = 0; i < result1.Length; i++)
-                {
-                    var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(result1[i]);
-                    if (charcode < 0)
-                        result2 += letters[charcode + 27];
-                    else result2 += letters[charcode];
+                 for (int i = 0; i < word.Length; i++)
+                 {
+                     var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(word[i]);
+                     if (charcode < 0)
+                         key += letters[charcode + 27];
+                     else key += letters[charcode];
+                 }
+
+                 for (int i = 0; i < key.Length; i++)
+                 {
+                     var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(key[i]);
+                     if (charcode < 0)
+                         result1 += letters[charcode + 27];
+                     else result1 += letters[charcode];
+                 }
+                 if (result1.EndsWith(" "))
+                 {
+                    if (!words.Contains(result1))
+                    {
+                        continue;
+                    }
                 }
-                if (words.Contains(result2))
-                {
-                    
-                }
-            }
-            return result;
+             }
+
+            return key;
         }
 
         static void Main(string[] args)
