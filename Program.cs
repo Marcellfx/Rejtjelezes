@@ -28,6 +28,30 @@ namespace dualis
             return result;
         }
 
+        public static string decryption(string message, string key)
+        {
+            var letters = "abcdefghijklmnopqrstuvwxyz ";
+            string result = "";
+
+            if (key.Length < message.Length)
+                return result = "túl rövid kulcs";
+
+            for (int i = 0; i < message.Count(); i++)
+            {
+                if (letters.Contains(message[i]) && letters.Contains(key[i]))
+                {
+                    var charcode = letters.IndexOf(message[i]) - letters.IndexOf(key[i]);
+                    if (charcode < 0)
+                        result += letters[charcode + 27];
+                    else result += letters[charcode];
+                }
+                else
+                    return result = "nem angol abc beűét tartalmaz";
+            }
+
+            return result;
+        }
+
         public static List<string> decoding(string message1, string message2)
         {
             var letters = "abcdefghijklmnopqrstuvwxyz ";
