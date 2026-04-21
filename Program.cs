@@ -30,27 +30,39 @@
         {
             var letters = "abcdefghijklmnopqrstuvwxyz ";
             List<string> words = new List<string>(File.ReadAllLines("words.txt"));
-            string result = "";
+            string result1 = "";
+            string result2 = "";
 
             foreach (string word in words) 
             {
-                for (int i = 0; i < message1.Count(); i++)
+                for (int i = 0; i < word.Count(); i++)
                 {
                     var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(word[i]);
                     if (charcode < 0)
-                        result += letters[charcode + 27];
-                    result += letters[charcode];
+                        result1 += letters[charcode + 27];
+                    else result1 += letters[charcode];
                 }
-                break;
+
+                for (int i = 0; i < result1.Length; i++)
+                {
+                    var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(result1[i]);
+                    if (charcode < 0)
+                        result2 += letters[charcode + 27];
+                    else result2 += letters[charcode];
+                }
+                if (words.Contains(result2))
+                {
+                    
+                }
             }
             return result;
         }
 
         static void Main(string[] args)
         {
-            Console.WriteLine(encryption("helloworld", "abcdefgijkl"));
-            Console.WriteLine(encryption("hangingout", "abcdefgijkl"));
-            Console.WriteLine("hfnosauzun","hfnosauzun");
+            Console.WriteLine(encryption("curiosity killed the cat", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
+            Console.WriteLine(encryption("early bird catches the worm", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
+            Console.WriteLine("zjccyqxdarkwgtixqlufbiy", "aqcfhyqtuv qwagavkmujkxct l");
         }
     }
 }
