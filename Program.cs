@@ -60,22 +60,28 @@
                         currentword += letters[charcode + 27];
                     else currentword += letters[charcode];
 
-                    if (currentword.EndsWith(" "))
+                    bool valid = false;
+                    foreach (var item in words)
                     {
-                        if (!words.Contains(currentword.Trim()))
+                        if (item.StartsWith(currentword))
                         {
-                            currentword = "";
+                            valid = true;
                             break;
                         }
-
-                        result1 += currentword;
-                        currentword = "";
                     }
+                    if (!valid)
+                    {
+                        result1 = "";
+                        result2 = "";
+                        key = "";
+                        currentword = "";
+                        break;
+                    }    
                 }
 
 
 
-                return key;
+                //return key;
             }
 
             static void Main(string[] args)
@@ -84,6 +90,6 @@
                 Console.WriteLine(encryption("early bird catches the worm", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
                 Console.WriteLine("zjccyqxdarkwgtixqlufbiy", "aqcfhyqtuv qwagavkmujkxct l");
             }
-        }
+        }   
     }
 }
