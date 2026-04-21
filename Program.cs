@@ -63,6 +63,7 @@ namespace dualis
                 string key = "";
                 string currentword = "";
                 bool reason = false;
+                
 
                 if (word.Length > message1.Length)
                 {
@@ -79,8 +80,9 @@ namespace dualis
                 }
 
                 bool second = true;
-                while (key.Length < message1.Length || key.Length < message2.Length)
+                while (key.Length < message1.Length && key.Length < message2.Length)
                 {
+                    bool foundLonger = false;
                     if (second)
                     {
                         currentword = "";
@@ -94,11 +96,23 @@ namespace dualis
                             bool valid = false;
                             foreach (var item in words)
                             {
-                                if (item.StartsWith(currentword))
+                                if (currentword.EndsWith(" "))
                                 {
-                                    valid = true;
-                                    break;
+                                    if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 2]))
+                                    {
+                                        valid = true;
+                                        break;
+                                    }
                                 }
+                                else
+                                {
+                                    if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 1]))
+                                    {
+                                        valid = true;
+                                        break;
+                                    }
+                                }
+
                             }
 
                             if (!valid)
@@ -115,11 +129,31 @@ namespace dualis
 
                         foreach (var item in words)
                         {
-                            if (item.StartsWith(currentword) && item.Length > currentword.Length)
+                            if (currentword.EndsWith(" "))
                             {
-                                currentword = item;
-                                break;
+                                if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 2]) && item.Length > currentword.Split(" ")[currentword.Split(" ").Length - 2].Length)
+                                {
+                                    currentword += item;
+                                    foundLonger = true;
+                                    break;
+                                }
                             }
+                            else
+                            {
+                                if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 1]) && item.Length > currentword.Split(" ")[currentword.Split(" ").Length - 1].Length)
+                                {
+                                    currentword += item;
+                                    foundLonger = true;
+                                    break;
+                                }
+                            }
+                            
+                        }
+
+                        if (!foundLonger)
+                        {
+                            reason = true;
+                            break;
                         }
 
                         key = "";
@@ -170,8 +204,15 @@ namespace dualis
                             if (item.StartsWith(currentword) && item.Length > currentword.Length)
                             {
                                 currentword = item;
+                                foundLonger = true;
                                 break;
                             }
+                        }
+
+                        if (!foundLonger)
+                        {
+                            reason = true;
+                            break;
                         }
 
                         key = "";
@@ -197,6 +238,14 @@ namespace dualis
 
         static void Main(string[] args)
         {
+            Console.WriteLine(encryption("curiosity killed the cat", "abcdefghijklmnopqrstuvwxyz "));
+            Console.WriteLine(encryption("early bird catches the worm", "abcdefghijklmnopqrstuvwxyz "));
+
+            List<string> foundedkeys = decoding("cvtlsxo fiutxysspjzxtxwp", "ebtobehpzmjnmfqwuirlazvslpl");
+            foreach (string k in foundedkeys)
+            {
+                Console.WriteLine(k);
+            }
         }
     }    
 }
