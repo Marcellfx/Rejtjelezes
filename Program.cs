@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        public static string encryption(string word,string key)
+        public static string encryption(string word, string key)
         {
             var letters = "abcdefghijklmnopqrstuvwxyz ";
             string result = "";
@@ -26,16 +26,17 @@
             return result;
         }
 
-        public static string decoding(string message1, string message2) 
+        public static string decoding(string message1, string message2)
         {
             var letters = "abcdefghijklmnopqrstuvwxyz ";
             List<string> words = new List<string>(File.ReadAllLines("words.txt"));
             string key = "";
             string result1 = "";
             string result2 = "";
+            string currentword = "";
 
-             foreach (string word in words)
-             {
+            foreach (string word in words)
+            {
                 if (word.Length > message1.Length)
                 {
                     result1 = "";
@@ -44,38 +45,45 @@
                     continue;
                 }
 
-                 for (int i = 0; i < word.Length; i++)
-                 {
-                     var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(word[i]);
-                     if (charcode < 0)
-                         key += letters[charcode + 27];
-                     else key += letters[charcode];
-                 }
+                for (int i = 0; i < word.Length; i++)
+                {
+                    var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(word[i]);
+                    if (charcode < 0)
+                        key += letters[charcode + 27];
+                    else key += letters[charcode];
+                }
 
-                 for (int i = 0; i < key.Length; i++)
-                 {
-                     var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(key[i]);
-                     if (charcode < 0)
-                         result1 += letters[charcode + 27];
-                     else result1 += letters[charcode];
-                 }
-                 if (result1.EndsWith(" "))
-                 {
-                    if (!words.Contains(result1))
+                for (int i = 0; i < key.Length; i++)
+                {
+                    var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(key[i]);
+                    if (charcode < 0)
+                        currentword += letters[charcode + 27];
+                    else currentword += letters[charcode];
+
+                    if (currentword.EndsWith(" "))
                     {
-                        continue;
+                        if (!words.Contains(currentword.Trim()))
+                        {
+                            currentword = "";
+                            break;
+                        }
+
+                        result1 += currentword;
+                        currentword = "";
                     }
                 }
-             }
 
-            return key;
-        }
 
-        static void Main(string[] args)
-        {
-            Console.WriteLine(encryption("curiosity killed the cat", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
-            Console.WriteLine(encryption("early bird catches the worm", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
-            Console.WriteLine("zjccyqxdarkwgtixqlufbiy", "aqcfhyqtuv qwagavkmujkxct l");
+
+                return key;
+            }
+
+            static void Main(string[] args)
+            {
+                Console.WriteLine(encryption("curiosity killed the cat", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
+                Console.WriteLine(encryption("early bird catches the worm", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
+                Console.WriteLine("zjccyqxdarkwgtixqlufbiy", "aqcfhyqtuv qwagavkmujkxct l");
+            }
         }
     }
 }
