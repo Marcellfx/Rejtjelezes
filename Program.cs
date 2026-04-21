@@ -2,7 +2,7 @@
 
 namespace dualis
 {
-    internal class Program
+    public class Program
     {
         public static string encryption(string word, string key)
         {
@@ -36,16 +36,12 @@ namespace dualis
 
             foreach (string word in words)
             {
-                string result1 = "";
-                string result2 = "";
                 string key = "";
                 string currentword = "";
                 bool reason = false;
 
                 if (word.Length > message1.Length)
                 {
-                    result1 = "";
-                    result2 = "";
                     key = "";
                     continue;
                 }
@@ -83,8 +79,6 @@ namespace dualis
 
                             if (!valid)
                             {
-                                result1 = "";
-                                result2 = "";
                                 key = "";
                                 currentword = "";
                                 reason = true;
@@ -97,7 +91,7 @@ namespace dualis
 
                         foreach (var item in words)
                         {
-                            if (item.StartsWith(currentword))
+                            if (item.StartsWith(currentword) && item.Length > currentword.Length)
                             {
                                 currentword = item;
                                 break;
@@ -129,7 +123,7 @@ namespace dualis
                             foreach (var item in words)
                             {
                                 if (item.StartsWith(currentword))
-                                {
+                                {   
                                     valid = true;
                                     break;
                                 }
@@ -137,8 +131,6 @@ namespace dualis
 
                             if (!valid)
                             {
-                                result1 = "";
-                                result2 = "";
                                 key = "";
                                 currentword = "";
                                 reason = true;
@@ -151,7 +143,7 @@ namespace dualis
 
                         foreach (var item in words)
                         {
-                            if (item.StartsWith(currentword))
+                            if (item.StartsWith(currentword) && item.Length > currentword.Length)
                             {
                                 currentword = item;
                                 break;
@@ -181,9 +173,6 @@ namespace dualis
 
         static void Main(string[] args)
         {
-            Console.WriteLine(encryption("curiosity killed the cat", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
-            Console.WriteLine(encryption("early bird catches the worm", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
-            Console.WriteLine(decoding("zjccyqxdarkwgtixqlufbiy", "aqcfhyqtuv qwagavkmujkxct l"));
         }
     }    
 }
