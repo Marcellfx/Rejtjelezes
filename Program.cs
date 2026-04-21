@@ -28,11 +28,12 @@ namespace dualis
             return result;
         }
 
-        public static string decoding(string message1, string message2)
+        public static List<string> decoding(string message1, string message2)
         {
             var letters = "abcdefghijklmnopqrstuvwxyz ";
             List<string> words = new List<string>(File.ReadAllLines("words.txt"));
-            
+            List<string> keys = new List<string>();
+
             foreach (string word in words)
             {
                 string result1 = "";
@@ -62,6 +63,7 @@ namespace dualis
                 {
                     if (second)
                     {
+                        currentword = "";
                         for (int i = 0; i < key.Length; i++)
                         {
                             var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(key[i]);
@@ -91,7 +93,7 @@ namespace dualis
                         }
 
                         if (reason)
-                            continue;
+                            break;
 
                         foreach (var item in words)
                         {
@@ -115,6 +117,7 @@ namespace dualis
 
                     else
                     {
+                        currentword = "";
                         for (int i = 0; i < key.Length; i++)
                         {
                             var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(key[i]);
@@ -144,7 +147,7 @@ namespace dualis
                         }
 
                         if (reason)
-                            continue;
+                            break;
 
                         foreach (var item in words)
                         {
@@ -167,15 +170,20 @@ namespace dualis
                     }
                 }
 
-                //return key;
-            }
+                if (reason)
+                    continue;
 
-            static void Main(string[] args)
-            {
-                Console.WriteLine(encryption("curiosity killed the cat", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
-                Console.WriteLine(encryption("early bird catches the worm", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
-                Console.WriteLine("zjccyqxdarkwgtixqlufbiy", "aqcfhyqtuv qwagavkmujkxct l");
+                keys.Add(key);
             }
-        }   
-    }
+            return keys;
+        }
+
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine(encryption("curiosity killed the cat", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
+            Console.WriteLine(encryption("early bird catches the worm", "xqmvkzpldsaowieurtnbcgyhfj qlpmzoxkcvbnasdertyu"));
+            Console.WriteLine(decoding("zjccyqxdarkwgtixqlufbiy", "aqcfhyqtuv qwagavkmujkxct l"));
+        }
+    }    
 }
