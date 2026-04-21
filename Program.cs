@@ -1,4 +1,6 @@
-﻿namespace dualis
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace dualis
 {
     internal class Program
     {
@@ -30,13 +32,15 @@
         {
             var letters = "abcdefghijklmnopqrstuvwxyz ";
             List<string> words = new List<string>(File.ReadAllLines("words.txt"));
-            string key = "";
-            string result1 = "";
-            string result2 = "";
-            string currentword = "";
-
+            
             foreach (string word in words)
             {
+                string result1 = "";
+                string result2 = "";
+                string key = "";
+                string currentword = "";
+                bool reason = false;
+
                 if (word.Length > message1.Length)
                 {
                     result1 = "";
@@ -69,14 +73,28 @@
                             break;
                         }
                     }
+
                     if (!valid)
                     {
                         result1 = "";
                         result2 = "";
                         key = "";
                         currentword = "";
+                        reason = true;
                         break;
-                    }    
+                    }   
+                }
+
+                if (reason)
+                    continue;
+
+                foreach (var item in words)
+                {
+                    if (item.StartsWith(currentword))
+                    {
+                        currentword = item;
+                        break;
+                    }
                 }
 
 
