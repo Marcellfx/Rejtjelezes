@@ -82,7 +82,7 @@ namespace dualis
                 bool second = true;
                 while (key.Length < message1.Length && key.Length < message2.Length)
                 {
-                    bool foundLonger = false;
+                    bool found = false;
                     if (second)
                     {
                         currentword = "";
@@ -93,26 +93,15 @@ namespace dualis
                                 currentword += letters[charcode + 27];
                             else currentword += letters[charcode];
 
+                            string fragment = currentword.Split(' ').Last();
                             bool valid = false;
                             foreach (var item in words)
                             {
-                                if (currentword.EndsWith(" "))
+                                if (item.StartsWith(fragment))
                                 {
-                                    if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 2]))
-                                    {
-                                        valid = true;
-                                        break;
-                                    }
+                                    valid = true;
+                                    break;
                                 }
-                                else
-                                {
-                                    if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 1]))
-                                    {
-                                        valid = true;
-                                        break;
-                                    }
-                                }
-
                             }
 
                             if (!valid)
@@ -127,30 +116,29 @@ namespace dualis
                         if (reason)
                             break;
 
+                        string lastFragment = currentword.Split(' ').Last();
+
                         foreach (var item in words)
                         {
-                            if (currentword.EndsWith(" "))
+                            if (item.StartsWith(lastFragment) && item.Length > lastFragment.Length)
                             {
-                                if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 2]) && item.Length > currentword.Split(" ")[currentword.Split(" ").Length - 2].Length)
+                                int lastSpaceIndex = currentword.LastIndexOf(' ');
+
+                                if (lastSpaceIndex != -1)
                                 {
-                                    currentword += item;
-                                    foundLonger = true;
-                                    break;
+                                    currentword = currentword.Substring(0, lastSpaceIndex + 1) + item;
                                 }
-                            }
-                            else
-                            {
-                                if (item.StartsWith(currentword.Split(" ")[currentword.Split(" ").Length - 1]) && item.Length > currentword.Split(" ")[currentword.Split(" ").Length - 1].Length)
+                                else
                                 {
-                                    currentword += item;
-                                    foundLonger = true;
-                                    break;
+                                    currentword = item;
                                 }
+
+                                found = true;
+                                break;
                             }
-                            
                         }
 
-                        if (!foundLonger)
+                        if (!found)
                         {
                             reason = true;
                             break;
@@ -177,11 +165,12 @@ namespace dualis
                                 currentword += letters[charcode + 27];
                             else currentword += letters[charcode];
 
+                            string fragment = currentword.Split(' ').Last();
                             bool valid = false;
                             foreach (var item in words)
                             {
-                                if (item.StartsWith(currentword))
-                                {   
+                                if (item.StartsWith(fragment))
+                                {
                                     valid = true;
                                     break;
                                 }
@@ -199,17 +188,29 @@ namespace dualis
                         if (reason)
                             break;
 
+                        string lastFragment = currentword.Split(' ').Last();
+
                         foreach (var item in words)
                         {
-                            if (item.StartsWith(currentword) && item.Length > currentword.Length)
+                            if (item.StartsWith(lastFragment) && item.Length > lastFragment.Length)
                             {
-                                currentword = item;
-                                foundLonger = true;
+                                int lastSpaceIndex = currentword.LastIndexOf(' ');
+
+                                if (lastSpaceIndex != -1)
+                                {
+                                    currentword = currentword.Substring(0, lastSpaceIndex + 1) + item;
+                                }
+                                else
+                                {
+                                    currentword = item;
+                                }
+
+                                found = true;
                                 break;
                             }
                         }
 
-                        if (!foundLonger)
+                        if (!found)
                         {
                             reason = true;
                             break;
@@ -238,14 +239,7 @@ namespace dualis
 
         static void Main(string[] args)
         {
-            Console.WriteLine(encryption("curiosity killed the cat", "abcdefghijklmnopqrstuvwxyz "));
-            Console.WriteLine(encryption("early bird catches the worm", "abcdefghijklmnopqrstuvwxyz "));
-
-            List<string> foundedkeys = decoding("cvtlsxo fiutxysspjzxtxwp", "ebtobehpzmjnmfqwuirlazvslpl");
-            foreach (string k in foundedkeys)
-            {
-                Console.WriteLine(k);
-            }
+           
         }
     }    
 }
