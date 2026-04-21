@@ -26,9 +26,31 @@
             return result;
         }
 
+        public static string decoding(string message1, string message2) 
+        {
+            var letters = "abcdefghijklmnopqrstuvwxyz ";
+            List<string> words = new List<string>(File.ReadAllLines("words.txt"));
+            string result = "";
+
+            foreach (string word in words) 
+            {
+                for (int i = 0; i < message1.Count(); i++)
+                {
+                    var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(word[i]);
+                    if (charcode < 0)
+                        result += letters[charcode + 27];
+                    result += letters[charcode];
+                }
+                break;
+            }
+            return result;
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine(encryption("helloworld", "abcdefgijkl"));
+            Console.WriteLine(encryption("hangingout", "abcdefgijkl"));
+            Console.WriteLine("hfnosauzun","hfnosauzun");
         }
     }
 }
