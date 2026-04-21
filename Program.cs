@@ -57,47 +57,115 @@ namespace dualis
                     else key += letters[charcode];
                 }
 
-                for (int i = 0; i < key.Length; i++)
+                bool second = true;
+                while (key.Length < message1.Length || key.Length < message2.Length)
                 {
-                    var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(key[i]);
-                    if (charcode < 0)
-                        currentword += letters[charcode + 27];
-                    else currentword += letters[charcode];
-
-                    bool valid = false;
-                    foreach (var item in words)
+                    if (second)
                     {
-                        if (item.StartsWith(currentword))
+                        for (int i = 0; i < key.Length; i++)
                         {
-                            valid = true;
-                            break;
+                            var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(key[i]);
+                            if (charcode < 0)
+                                currentword += letters[charcode + 27];
+                            else currentword += letters[charcode];
+
+                            bool valid = false;
+                            foreach (var item in words)
+                            {
+                                if (item.StartsWith(currentword))
+                                {
+                                    valid = true;
+                                    break;
+                                }
+                            }
+
+                            if (!valid)
+                            {
+                                result1 = "";
+                                result2 = "";
+                                key = "";
+                                currentword = "";
+                                reason = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (!valid)
-                    {
-                        result1 = "";
-                        result2 = "";
+                        if (reason)
+                            continue;
+
+                        foreach (var item in words)
+                        {
+                            if (item.StartsWith(currentword))
+                            {
+                                currentword = item;
+                                break;
+                            }
+                        }
+
                         key = "";
-                        currentword = "";
-                        reason = true;
-                        break;
-                    }   
-                }
+                        for (int i = 0; i < currentword.Length; i++)
+                        {
+                            var charcode = letters.IndexOf(message2[i]) - letters.IndexOf(currentword[i]);
+                            if (charcode < 0)
+                                key += letters[charcode + 27];
+                            else key += letters[charcode];
+                        }
+                        second = false;
+                    }
 
-                if (reason)
-                    continue;
-
-                foreach (var item in words)
-                {
-                    if (item.StartsWith(currentword))
+                    else
                     {
-                        currentword = item;
-                        break;
+                        for (int i = 0; i < key.Length; i++)
+                        {
+                            var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(key[i]);
+                            if (charcode < 0)
+                                currentword += letters[charcode + 27];
+                            else currentword += letters[charcode];
+
+                            bool valid = false;
+                            foreach (var item in words)
+                            {
+                                if (item.StartsWith(currentword))
+                                {
+                                    valid = true;
+                                    break;
+                                }
+                            }
+
+                            if (!valid)
+                            {
+                                result1 = "";
+                                result2 = "";
+                                key = "";
+                                currentword = "";
+                                reason = true;
+                                break;
+                            }
+                        }
+
+                        if (reason)
+                            continue;
+
+                        foreach (var item in words)
+                        {
+                            if (item.StartsWith(currentword))
+                            {
+                                currentword = item;
+                                break;
+                            }
+                        }
+
+                        key = "";
+                        for (int i = 0; i < currentword.Length; i++)
+                        {
+                            var charcode = letters.IndexOf(message1[i]) - letters.IndexOf(currentword[i]);
+                            if (charcode < 0)
+                                key += letters[charcode + 27];
+                            else key += letters[charcode];
+                        }
+                        second = true;
                     }
                 }
-
-
 
                 //return key;
             }
